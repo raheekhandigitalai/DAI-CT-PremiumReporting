@@ -3,7 +3,7 @@ package tests;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class Premium {
+public class ReportHandling {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
 

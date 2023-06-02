@@ -19,7 +19,7 @@ public class FilteringTests {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
     protected IOSDriver driver;
-    protected Premium premium = new Premium();
+    protected ReportHandling reportHandling = new ReportHandling();
 
     @BeforeMethod
     public void setUp(Method method) throws MalformedURLException {
@@ -29,9 +29,9 @@ public class FilteringTests {
         capabilities.setCapability("app", "cloud:com.experitest.ExperiBank");
         capabilities.setCapability("bundleId", "com.experitest.ExperiBank");
 
-        premium.init(capabilities); // Corporate Standard
-        premium.init(capabilities, "BUILD_NUMBER", "isLocalExecution");
-        premium.init(capabilities, "BUILD_NUMBER", "isJenkinsExecution", "true", "false");
+        reportHandling.init(capabilities); // Corporate Standard
+        reportHandling.init(capabilities, "BUILD_NUMBER", "isLocalExecution");
+        reportHandling.init(capabilities, "BUILD_NUMBER", "isJenkinsExecution", "true", "false");
 
         driver = new IOSDriver(new URL("https://uscloud.experitest.com/wd/hub"), capabilities);
     }
@@ -50,7 +50,7 @@ public class FilteringTests {
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
         try {
-            premium.isCapabilityPresent(driver, capabilities, "isManual");
+            reportHandling.isCapabilityPresent(driver, capabilities, "isManual");
             driver.quit();
         } catch (Exception e) {
             driver.quit();

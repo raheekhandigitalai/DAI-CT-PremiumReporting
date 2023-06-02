@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="DAI-CT-PremiumReporting" />
+        <module name="DAI-CT-ReportingStandards" />
       </profile>
     </annotationProcessing>
   </component>

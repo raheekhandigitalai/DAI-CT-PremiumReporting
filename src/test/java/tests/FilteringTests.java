@@ -3,6 +3,7 @@ package tests;
 import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,7 +20,7 @@ public class FilteringTests {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
     protected IOSDriver driver;
-    protected ReportHandling reportHandling = new ReportHandling();
+    protected SeeTestReporter reporter = new SeeTestReporter();
 
     @BeforeMethod
     public void setUp(Method method) throws MalformedURLException {
@@ -29,9 +30,9 @@ public class FilteringTests {
         capabilities.setCapability("app", "cloud:com.experitest.ExperiBank");
         capabilities.setCapability("bundleId", "com.experitest.ExperiBank");
 
-        reportHandling.init(capabilities); // Corporate Standard
-        reportHandling.init(capabilities, "BUILD_NUMBER", "isLocalExecution");
-        reportHandling.init(capabilities, "BUILD_NUMBER", "isJenkinsExecution", "true", "false");
+        reporter.init(capabilities); // Corporate Standard
+        reporter.init(capabilities, "BUILD_NUMBER", "isLocalExecution");
+        reporter.init(capabilities, "BUILD_NUMBER", "isJenkinsExecution", "true", "false");
 
         driver = new IOSDriver(new URL("https://uscloud.experitest.com/wd/hub"), capabilities);
     }
@@ -43,19 +44,28 @@ public class FilteringTests {
         driver.findElement(By.name("loginButton")).click();
 
         Thread.sleep(3000);
-        Boolean isLogoutButtonPresent = driver.findElement(By.name("logoutButton")).isDisplayed();
+        Boolean isLogoutButtonPresent = driver.findElement(By.name("ogoutButton")).isDisplayed();
         assertTrue(isLogoutButtonPresent);
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
         try {
-            reportHandling.isCapabilityPresent(driver, capabilities, "isManual");
-            driver.quit();
+            if (result.isSuccess()) {
+                reporter.setReportStatus(driver, "Passed", "Test Name: " + result.getName());
+            } else {
+                String cause = reporter.captureFailureCause(result);
+                reporter.addPropertyForReporting(driver, "failureCause", cause);
+                reporter.setReportStatus(driver, "Failed", cause);
+            }
         } catch (Exception e) {
-            driver.quit();
+            System.out.println("Could not pass relevant test information in TearDown. Ending session gracefully.");
+            e.printStackTrace();
         }
 
+        boolean isCapabilityPresent = reporter.isCapabilityPresent(driver, capabilities, "isManual");
+        assertTrue(isCapabilityPresent, "isManual capability is not present.");
+        driver.quit();
     }
 
 }

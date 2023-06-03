@@ -2,10 +2,12 @@ package tests;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.ITestResult;
 
-public class ReportHandling {
+public class SeeTestReporter {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
+    protected AppiumDriver driver;
 
     public void init() {}
 
@@ -48,6 +50,21 @@ public class ReportHandling {
         return capabilities;
     }
 
+    // Used to capture Failure Cause Message in case the Test fails
+    public String captureFailureCause(ITestResult result) {
+        String cause = null;
+
+        try {
+            String[] fullCauseFailure = result.getThrowable().getMessage().split("\\R");
+            cause = fullCauseFailure[0];
+        } catch (Exception e) {
+            System.out.println("captureFailureCause - Unable to capture Failure Cause");
+            e.printStackTrace();
+        }
+
+        return cause;
+    }
+
     // Used for Validation purposes, to see if a certain Capability exists as part of the Test Execution.
     // If the capability being looked for doesn't exist, appropriate property will be added for the purpose of filtering.
     public boolean isCapabilityPresent(AppiumDriver driver, DesiredCapabilities capabilities, String capabilityName) {
@@ -59,6 +76,20 @@ public class ReportHandling {
 
     public boolean isCapabilityPresent(DesiredCapabilities capabilities, String capabilityName) {
         return capabilities.getCapability(capabilityName) != null;
+    }
+
+    public void addPropertyForReporting(AppiumDriver driver, String property, String value) {
+        driver.executeScript("seetest:client.addTestProperty(\"" + property + "\", \"" + value + "\")");
+    }
+
+    public void setReportStatus(AppiumDriver driver, String status, String message) {
+        driver.executeScript("seetest:client.setReportStatus(\"" + status + "\", \"" + status + "\", \"" + message + "\")");
+    }
+
+    // Status is either "true" or "false"
+    //
+    public void addReportStep(AppiumDriver driver, String input, String status) {
+        driver.executeScript("seetest:client.report(\"" + input + "\", \"" + status + "\")");
     }
 
 }

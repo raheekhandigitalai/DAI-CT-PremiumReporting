@@ -7,7 +7,6 @@ import org.testng.ITestResult;
 public class SeeTestReporter {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
-    protected AppiumDriver driver;
 
     public void init() {}
 
@@ -78,16 +77,17 @@ public class SeeTestReporter {
         return capabilities.getCapability(capabilityName) != null;
     }
 
+    // Add custom Properties for Filtering purposes
     public void addPropertyForReporting(AppiumDriver driver, String property, String value) {
         driver.executeScript("seetest:client.addTestProperty(\"" + property + "\", \"" + value + "\")");
     }
 
+    // Marks entire Test as either Passed / Failed / Skipped, and sent custom message, such as StackTrace
     public void setReportStatus(AppiumDriver driver, String status, String message) {
         driver.executeScript("seetest:client.setReportStatus(\"" + status + "\", \"" + status + "\", \"" + message + "\")");
     }
 
-    // Status is either "true" or "false"
-    //
+    // This adds a custom line in the Report Steps. Status is either "true" meaning Step Passed, or "false" meaning Step Failed
     public void addReportStep(AppiumDriver driver, String input, String status) {
         driver.executeScript("seetest:client.report(\"" + input + "\", \"" + status + "\")");
     }

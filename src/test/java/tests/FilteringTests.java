@@ -38,13 +38,24 @@ public class FilteringTests {
     }
 
     @Test
-    public void test_filtering_scenario() throws InterruptedException {
+    public void positive_test() throws InterruptedException {
         driver.findElement(By.name("usernameTextField")).sendKeys("company");
         driver.findElement(By.name("passwordTextField")).sendKeys("company");
         driver.findElement(By.name("loginButton")).click();
 
         Thread.sleep(3000);
-        Boolean isLogoutButtonPresent = driver.findElement(By.name("ogoutButton")).isDisplayed();
+        Boolean isLogoutButtonPresent = driver.findElement(By.name("logoutButton")).isDisplayed();
+        assertTrue(isLogoutButtonPresent);
+    }
+
+    @Test
+    public void negative_test() throws InterruptedException {
+        driver.findElement(By.name("usernameTextField")).sendKeys("company");
+        driver.findElement(By.name("passwordTextField")).sendKeys("company");
+        driver.findElement(By.name("loginButton")).click();
+
+        Thread.sleep(3000);
+        Boolean isLogoutButtonPresent = driver.findElement(By.name("invalidElement")).isDisplayed();
         assertTrue(isLogoutButtonPresent);
     }
 

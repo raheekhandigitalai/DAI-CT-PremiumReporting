@@ -4,13 +4,19 @@ import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
 
-public class SeeTestReporter {
+public class ContinuousTestingReporter {
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
 
     public void init() {}
 
-    // Example of Standard Capabilities that will be set across Organization
+    /**
+     * Example of Standard Capabilities that will be set across Organization
+     *
+     * "BUILD_NUMBER" is an Environment Variable from Jenkins.
+     * This is where we can hard code in certain behaviors and environment variables we would like to validate
+     * against for all tests.
+     */
     public DesiredCapabilities init(DesiredCapabilities capabilities) {
         this.capabilities = capabilities;
 
@@ -49,7 +55,8 @@ public class SeeTestReporter {
         return capabilities;
     }
 
-    // Used to capture Failure Cause Message in case the Test fails
+
+    // Example of how we can capture the Error Message from StackTrace provided by the Test Execution
     public String captureFailureCause(ITestResult result) {
         String cause = null;
 
@@ -77,7 +84,11 @@ public class SeeTestReporter {
         return capabilities.getCapability(capabilityName) != null;
     }
 
-    // Add custom Properties for Filtering purposes
+    /**
+     * When running Appium based Scripts, the values provided in the Desired Capabilities becomes properties for Filtering Test Results.
+     * However - We may need to add additional properties depending on the state of the Test or how it ended.
+     * This code example allows us to add properties mid-test.
+     */
     public void addPropertyForReporting(AppiumDriver driver, String property, String value) {
         driver.executeScript("seetest:client.addTestProperty(\"" + property + "\", \"" + value + "\")");
     }

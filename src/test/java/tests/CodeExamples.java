@@ -14,13 +14,13 @@ import java.net.URL;
 
 import static org.testng.Assert.assertTrue;
 
-public class FilteringTests {
+public class CodeExamples {
 
-    protected String ACCESS_KEY = "";
+    protected String ACCESS_KEY = ""; // TODO: Provide Access Key - https://docs.experitest.com/display/TE/Obtaining+Access+Key
 
     protected DesiredCapabilities capabilities = new DesiredCapabilities();
     protected IOSDriver driver;
-    protected SeeTestReporter reporter = new SeeTestReporter();
+    protected ContinuousTestingReporter reporter = new ContinuousTestingReporter();
 
     @BeforeMethod
     public void setUp(Method method) throws MalformedURLException {
@@ -37,6 +37,7 @@ public class FilteringTests {
         driver = new IOSDriver(new URL("https://uscloud.experitest.com/wd/hub"), capabilities);
     }
 
+    // This test will Pass
     @Test
     public void positive_test() throws InterruptedException {
         driver.findElement(By.name("usernameTextField")).sendKeys("company");
@@ -48,6 +49,7 @@ public class FilteringTests {
         assertTrue(isLogoutButtonPresent);
     }
 
+    // This test will Pass
     @Test
     public void negative_test() throws InterruptedException {
         driver.findElement(By.name("usernameTextField")).sendKeys("company");
@@ -78,5 +80,6 @@ public class FilteringTests {
         assertTrue(isCapabilityPresent, "isManual capability is not present.");
         driver.quit();
     }
+
 
 }

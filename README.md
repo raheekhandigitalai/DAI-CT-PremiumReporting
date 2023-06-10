@@ -1,6 +1,6 @@
 # DAI-CT-PremiumReporting
 
-The purpose of this Code Repository is to show how we can improve Test Results capturing by implementing certain changes within your Automation Framework.
+The purpose of this Code Repository is to show how we can improve Test Results being captured in Digital.ai's Continuous Testing solution, by implementing certain changes within your Automation Framework.
 
 Digital.ai's Continuous Testing solution does a great job in capturing the Test Results by presenting visual data, such as Video, Test Steps and Device Logs:
 
